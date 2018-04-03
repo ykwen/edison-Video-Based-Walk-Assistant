@@ -6,6 +6,8 @@
 
 This is the IoT project for wearable device.
 
+Use camera taking videos and streaming into aws for situation recognition.
+
 #### Road
 
 This part uses intel-edison with camera to stream situation on to web server using Node.js. 
