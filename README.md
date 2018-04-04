@@ -1,4 +1,4 @@
-# Visual Assistant
+# Visual Safty Assistant
 
 ## IoT Project
 
@@ -10,9 +10,9 @@ Use camera taking videos and streaming into aws for situation recognition.
 
 #### Road
 
-This part uses intel-edison with camera to stream situation on to web server using Node.js. 
-Then using machine learning to analysis the situation to give warnings about snow, stairs and trafic.
-The result is returned to cell phone with android app to give warning to users.
+This part uses intel-edison with camera to stream video on to aws kinesis and use rekognition to analyze user's situation. If there is a potential danger around, it will raise a warning to remind users. If there is a criminal, users can choose the save the video and faces in the video for police department.
+
+The stream video can also be displayed for logined users to show situation and recognition result.
 
 #### Fall
 If there is a fall signal detected by accelemeter from another part of the project, the server will send the picture received immediatly to related registed users.
