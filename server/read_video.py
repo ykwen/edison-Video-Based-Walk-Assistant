@@ -1,13 +1,20 @@
 import cv2
 import boto3
-import cPickle
+import _pickle as cPickle
 import json
 import time
 
-kinesis_client = boto3.client("kinesis")
-rekog_client = boto3.client("rekognition")
+config = json.load(open("./config.json"))
+access_key = config["Access_Key"]
+secret_key = config["Secret_Key"]
+kinesis_shard = config["Kinesis_Shard_id"]
+kinesis_client = boto3.client("kinesis",
+                          aws_access_key_id=access_key,
+                          aws_secret_access_key=secret_key,
+                          region_name='us-east-1')
+#rekog_client = boto3.client("rekognition")
 
-config = json.load(open("./edison/config.json"))
+config = json.load(open("./config.json"))
 kinesis_name = config["Kinesis_Name"]
 kinesis_shard = config["Kinesis_Shard_id"]
 kinesis_type = "LATEST"
@@ -23,11 +30,7 @@ def read_video():
         shard_it = out["NextShardIterator"]
         frame = decode_image(out)
         time.sleep(1)
-
-
-
-    #frame = decode_image(response)
-    #cv2.imshow('frame', frame)
+#cv2.imshow('frame', frame)
 
 
 
@@ -36,12 +39,14 @@ def decode_image(out):
         result = out["Records"][0]["Data"]
         flag = True
     except:
-        print 'No Stream Now'
+        print ('No Stream Now')
         flag = False
     if flag:
-        frame_package = cPickle.loads(result)
-        frame = frame_package['ImageBytes']
+        frame_package = cPickle.loads(result, encoding='bytes')
+        frame = frame_package[b'ImageBytes']
         decimg = cv2.imdecode(frame, 1)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            pass
         return decimg
 
 read_video()
