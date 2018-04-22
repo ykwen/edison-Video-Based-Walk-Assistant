@@ -14,7 +14,7 @@ This part uses intel-edison with camera to stream video on to aws kinesis and us
 
 The stream video can also be displayed for logined users to show situation and recognition result.
 
-The cascade data of traffic light is downloaded from https://github.com/cfizette/road-sign-cascades
+The cascade data of traffic light is downloaded from https://github.com/igororlov/TrafficLight
 
 #### Fall
 If there is a fall signal detected by accelemeter from another part of the project, the server will send the picture received immediatly to related registed users.
