@@ -1,5 +1,6 @@
 import sys
 import cv2
+import time
 from multiprocessing import Pool
 from upload_video import encode_and_send_frame
 
@@ -14,11 +15,6 @@ def video_capture():
 
     argv_len = len(sys.argv)
 
-    capture_rate = 30 # Frame capture rate.. every X frames. Positive integer.
-
-    if argv_len > 1 and sys.argv[1].isdigit():
-        capture_rate = int(sys.argv[1])
-
     cap = cv2.VideoCapture(0) #Use 0 for built-in camera. Use 1, 2, etc. for attached cameras.
     pool = Pool(processes=3)
 
@@ -32,14 +28,8 @@ def video_capture():
 
         #if frame_count % capture_rate == 0:
         pool.apply_async(encode_and_send_frame, (frame, frame_count, True, False, False,)).get()
+        time.sleep(2)
 
-        frame_count += 1
-
-        #Change the image with things recognized marked up
-        #deal_with_rek_result(result)
-
-        # Display the resulting frame
-        #cv2.imshow('frame', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
