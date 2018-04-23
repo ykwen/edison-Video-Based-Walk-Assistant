@@ -14,12 +14,9 @@ kinesis_client = boto3.client("kinesis",
                           aws_access_key_id=access_key,
                           aws_secret_access_key=secret_key,
                           region_name='us-east-1')
-
-config = json.load(open("./config.json"))
 kinesis_name = config["Kinesis_Name"]
-kinesis_shard = config["Kinesis_Shard_id"]
 kinesis_type = "LATEST"
-image_path = "../web/static/image/"
+image_path = "./web/static/image/temp/"
 
 
 def remove_old(title):
@@ -40,10 +37,11 @@ def read_video():
     while(True):
         out = kinesis_client.get_records(ShardIterator=shard_it, Limit=1)
         shard_it = out["NextShardIterator"]
-        frame = decode_image(out)
-        title = str(calendar.timegm(time.gmtime()))
-        remove_old(title)
-        cv2.imwrite(image_path+title+'.jpg',frame)
+        frame, flag = decode_image(out)
+        if flag:
+            title = str(calendar.timegm(time.gmtime()))
+            remove_old(title)
+            cv2.imwrite(image_path+title+'.jpg',frame)
         time.sleep(1)
 
 
@@ -52,6 +50,7 @@ def decode_image(out):
     try:
         result = out["Records"][0]["Data"]
         flag = True
+        print('Reading')
     except:
         print ('No Stream Now')
         flag = False
@@ -59,9 +58,12 @@ def decode_image(out):
         frame_package = cPickle.loads(result, encoding='bytes')
         frame = frame_package[b'ImageBytes']
         decimg = cv2.imdecode(frame, 1)
+        cv2.imshow('test',decimg)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             pass
-        return decimg
+        return decimg, flag
+    else:
+        return  [],flag
 
 
 if __name__ == '__main__':

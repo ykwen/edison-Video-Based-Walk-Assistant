@@ -17,7 +17,8 @@ items= pd.read_csv("../server/items.csv")
 
 
 def label_detect(fileName):
-    response = client.detect_labels(Image={'S3Object': {'Bucket': bucket, 'Name': fileName}})
+    s3_path = "/temp/"
+    response = client.detect_labels(Image={'S3Object': {'Bucket': bucket, 'Name': s3_path+fileName}})
     labels = []
     for label in response['Labels']:
         if label['Confidence'] >= 60:

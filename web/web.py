@@ -1,5 +1,5 @@
-from flask import Flask, render_template, abort, jsonify, request, session,request, render_template, g, redirect, Response
 import os
+from flask import Flask, render_template, abort, jsonify, request, session,request, render_template, g, redirect, Response
 from server import rekognition as rek
 from server import produce_voice as pro_v
 from server import s3_operation as s3
@@ -28,8 +28,13 @@ def show_image():
 
 @app.route('/detect')
 def detect_things():
-    img_name = os.listdir(image_path)[0]
-    label = rek.label_detect(img_name)
+    image_file = os.listdir(image_path)[0]
+    try:
+        s3.clear()
+    except:
+        pass
+    s3.upload(image_path + image_file)
+    label = rek.label_detect(image_file)
     global pre_label
     if pre_label != label:
         pre_label = label
@@ -40,7 +45,6 @@ def detect_things():
         return render_template("detect.html", image_label=label, audio_file=audio)
     else:
         return render_template("detect.html", image_label=label)
-
 
 
 if __name__ == '__main__':
