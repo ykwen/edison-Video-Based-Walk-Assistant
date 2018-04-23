@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="5">
+    <title>Detect</title>
+</head>
+<body>
+<ul>
+{% for label in image_label %}
+  <li>{{label}}</li>
+  {% endfor %}
+</ul>
+<section>
+    <a style="background-color: blueviolet;color: cornsilk;font-size:50px" href="voice">Click to enter voice notification mode~</a>
+    <audio autoplay>
+  <source src={{audio_file}} type="audio/mpeg">
+    </audio>
+</section>
+<a href="">Home</a>
+</body>
+</html>

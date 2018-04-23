@@ -3,6 +3,8 @@ import boto3
 import _pickle as cPickle
 import json
 import time
+import calendar
+import os
 
 config = json.load(open("./config.json"))
 access_key = config["Access_Key"]
@@ -12,12 +14,22 @@ kinesis_client = boto3.client("kinesis",
                           aws_access_key_id=access_key,
                           aws_secret_access_key=secret_key,
                           region_name='us-east-1')
-#rekog_client = boto3.client("rekognition")
 
 config = json.load(open("./config.json"))
 kinesis_name = config["Kinesis_Name"]
 kinesis_shard = config["Kinesis_Shard_id"]
 kinesis_type = "LATEST"
+image_path = "../web/static/image/"
+
+
+def remove_old(title):
+    for file_name in os.listdir(image_path):
+        try:
+            file_name = file_name.split('.')[0]
+            if int(file_name) < int(title.split('.')[0]):
+                os.remove(image_path+file_name+'.jpg')
+        except:
+            pass
 
 
 def read_video():
@@ -29,8 +41,10 @@ def read_video():
         out = kinesis_client.get_records(ShardIterator=shard_it, Limit=1)
         shard_it = out["NextShardIterator"]
         frame = decode_image(out)
+        title = str(calendar.timegm(time.gmtime()))
+        remove_old(title)
+        cv2.imwrite(image_path+title+'.jpg',frame)
         time.sleep(1)
-#cv2.imshow('frame', frame)
 
 
 
@@ -49,4 +63,6 @@ def decode_image(out):
             pass
         return decimg
 
-read_video()
+
+if __name__ == '__main__':
+    read_video()
