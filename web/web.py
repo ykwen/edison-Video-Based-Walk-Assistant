@@ -36,7 +36,7 @@ def detect_things():
     s3.upload(image_path + image_file)
     label = rek.label_detect(image_file)
     global pre_label
-    if pre_label != label:
+    if set(pre_label) != set(label):
         pre_label = label
         path = "./static/audio/"
         pro_v.remove_old(path)
