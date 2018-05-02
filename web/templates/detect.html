@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="refresh" content="5">
     <title>Detect</title>
+    <style>
+    body {
+    background-image: url("grass.jpg");
+    background-repeat: no-repeat;
+    }
+    ul{
+    background-color:#58FA58 ;
+    color: black;
+    font-size: 25px;
+    }
+    a#home{
+    background-color: #ececed;
+    font-size: 30px;
+    position: relative;
+    left: 360px;
+    }
+    </style>
 </head>
 <body>
 <ul>
@@ -12,11 +29,11 @@
   {% endfor %}
 </ul>
 <section>
-    <a style="background-color: blueviolet;color: cornsilk;font-size:50px" href="voice">Click to enter voice notification mode~</a>
+    <a style="background-color: blueviolet;color: cornsilk;font-size:40px" href="voice">Click to enter voice notification mode~</a>
     <audio autoplay>
   <source src={{audio_file}} type="audio/mpeg">
     </audio>
 </section>
-<a href="">Home</a>
+<a href="" id="home">Home</a>
 </body>
 </html>
