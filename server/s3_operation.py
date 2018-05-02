@@ -39,7 +39,7 @@ def upload_face(filepath):
 def save_face(filepath):
     filename = filepath.split('/')[-1]
     new_name = str(datetime.datetime.now())
-    client.upload_file(filepath, bucket, 'save/' + new_name)
+    client.upload_file(filepath, bucket, 'save/' + new_name+'.jpg')
     return
 
 
