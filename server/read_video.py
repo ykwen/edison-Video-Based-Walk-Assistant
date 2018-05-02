@@ -16,7 +16,7 @@ kinesis_client = boto3.client("kinesis",
                           region_name='us-east-1')
 kinesis_name = config["Kinesis_Name"]
 kinesis_type = "LATEST"
-image_path = "./web/static/image/temp/"
+image_path = "../web/static/image/temp/"
 
 
 def remove_old(title):

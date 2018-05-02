@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="refresh" content="2">
-    <title>Road Situation</title>
+    <title>Faces Detection</title>
     <style>
         body{
-            background-color: #81F7F3;
+            background-color: wheat;
         }
         a{
             font-size: 80px;
@@ -18,16 +18,21 @@
             font-size: 60px;
             position: relative;
             left: 120px;
-            color: saddlebrown;
+            color: darkorange;
         }
     </style>
 </head>
 <body>
     <header>
-        <p id="header">Road Situations</p>
+        <p id="header">Faces on the road</p>
     </header>
     <section>
-    <img src="{{ user_image }}" alt="User Image">
+        <img src="{{ user_image }}" alt="User Image">
+        <p>
+            <form method="post" action="face">
+                <input type="submit" name="submit" value="Save">
+            </form>
+            {{ sub_status }}</p>
     </section>
     <a href="">Home</a>
 </body>

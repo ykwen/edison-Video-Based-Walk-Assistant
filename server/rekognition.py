@@ -15,10 +15,12 @@ client = boto3.client("rekognition",
 
 items= pd.read_csv("../server/items.csv")
 
+face_features = ['Width','Height','Left','Top']
+
 
 def label_detect(fileName):
     s3_path = "/temp/"
-    response = client.detect_labels(Image={'S3Object': {'Bucket': bucket, 'Name': s3_path+fileName}},MinConfidence=60)
+    response = client.detect_labels(Image={'S3Object': {'Bucket': bucket, 'Name': s3_path+fileName}},MinConfidence=60,MaxLabels=5)
     labels = []
     for label in response['Labels']:
         if label['Confidence'] >= 60:
@@ -35,7 +37,6 @@ def getlabel(label):
     return rlabel
 
 
-
 def mark_faces(fdata, img):
     height, width,_ = img.shape
     print (width, height)
@@ -48,9 +49,9 @@ def mark_faces(fdata, img):
     return img
 
 
-face_features = ['Width','Height','Left','Top']
 def face_detect(fileName, img):
-    response = client.detect_faces(Image={'S3Object': {'Bucket': bucket, 'Name': fileName}})
+    s3_path = "/temp/"
+    response = client.detect_faces(Image={'S3Object': {'Bucket': bucket, 'Name': s3_path+fileName}})
     faces = response['FaceDetails']
     face_data = []
     for bound in faces:
@@ -60,8 +61,7 @@ def face_detect(fileName, img):
         face_data.append(fd)
 
     img = mark_faces(face_data, img)
-
-    return response
+    return img
 '''
     cv2.imshow('test',img)
     if cv2.waitKey(1) & 0xFF == ord('q'):
